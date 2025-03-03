@@ -1,7 +1,41 @@
+"use client";
+
 import Counter from "../components/Counter";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+
+// 初期カウント値の定義
+const initialCountValues = {
+    counter1: 5,
+    counter2: 0,
+    counter3: 0,
+    counter4: 100,
+    counter5: 1000
+};
 
 export default function CounterPage() {
+    // 各カウンターの状態を管理
+    const [counts, setCounts] = useState(initialCountValues);
+
+    // ローカルストレージから状態を復元
+    useEffect(() => {
+        const savedCounts = localStorage.getItem('counterValues');
+        if (savedCounts) {
+            setCounts(JSON.parse(savedCounts));
+        }
+    }, []);
+
+    // カウント更新関数
+    const handleCountUpdate = (counterId: string, newCount: number) => {
+        const newCounts = {
+            ...counts,
+            [counterId]: newCount
+        };
+        setCounts(newCounts);
+        // ローカルストレージに保存
+        localStorage.setItem('counterValues', JSON.stringify(newCounts));
+    };
+
     return (
         <div className="min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-800">
             <div className="container mx-auto px-4 py-12">
@@ -12,7 +46,8 @@ export default function CounterPage() {
                                 message="Hello Counter!" 
                                 buttonText="Count Up"
                                 messageColor="text-purple-500"
-                                initialCount={5}
+                                initialCount={counts.counter1}
+                                onCountChange={(newCount) => handleCountUpdate('counter1', newCount)}
                             />
                         </div>
                         
@@ -21,6 +56,8 @@ export default function CounterPage() {
                                 message="カウンター2号" 
                                 buttonText="増やす"
                                 messageColor="text-green-500"
+                                initialCount={counts.counter2}
+                                onCountChange={(newCount) => handleCountUpdate('counter2', newCount)}
                             />
                         </div>
 
@@ -29,6 +66,8 @@ export default function CounterPage() {
                                 message="カウンター2号" 
                                 buttonText="増やす"
                                 messageColor="text-green-500"
+                                initialCount={counts.counter3}
+                                onCountChange={(newCount) => handleCountUpdate('counter3', newCount)}
                             />
                         </div>
 
@@ -37,7 +76,8 @@ export default function CounterPage() {
                                 message="🌟 スペシャルカウンター" 
                                 buttonText="⭐️ スコアアップ ⭐️"
                                 messageColor="text-yellow-500"
-                                initialCount={100}
+                                initialCount={counts.counter4}
+                                onCountChange={(newCount) => handleCountUpdate('counter4', newCount)}
                             />
                         </div>
 
@@ -46,7 +86,8 @@ export default function CounterPage() {
                                 message="レッドカウンター" 
                                 buttonText="🔥 パワーアップ 🔥"
                                 messageColor="text-red-500"
-                                initialCount={1000}
+                                initialCount={counts.counter5}
+                                onCountChange={(newCount) => handleCountUpdate('counter5', newCount)}
                             />
                         </div>
                     </div>
