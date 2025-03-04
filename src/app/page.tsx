@@ -5,12 +5,12 @@ import Header from "./components/Header";
 import MessageSection from "./components/MessageSection";
 import ButtonSection from "./components/ButtonSection";
 import InfoList from "./components/InfoList";
+import ImageSection from "./components/ImageSection";
 
 // Homeコンポーネントはアプリケーションのトップページを表示します
 export default function Home() {
   const [message, setMessage] = useState(""); // APIから取得したメッセージを格納
   const [messageStyle, setMessageStyle] = useState({}); // メッセージのスタイルを格納
-  const [apiImage, setApiImage] = useState<string | null>(null); // APIから取得した画像のURLを格納
 
   // APIからメッセージを取得する関数
   const fetchMessage = async () => {
@@ -23,20 +23,6 @@ export default function Home() {
       setMessageStyle(data.style);
     } catch (error) {
       console.error('APIエラー:', error);
-    }
-  };
-
-  // APIから画像を取得する関数
-  const fetchImage = async () => {
-    try {
-      const response = await fetch('/api/hello', {
-        method: 'GET'
-      });
-      const blob = await response.blob();
-      const imageUrl = URL.createObjectURL(blob);
-      setApiImage(imageUrl);
-    } catch (error) {
-      console.error('画像取得エラー:', error);
     }
   };
 
@@ -71,15 +57,13 @@ export default function Home() {
             messageStyle={messageStyle} 
           />
           
-          {/* APIから取得した画像を表示 */}
-          {apiImage && (
-            <img src={apiImage} alt="Fetched from API" className="rounded-lg shadow-md" />
-          )}
+          <ImageSection 
+            staticImageSrc="/IMG.jpg" 
+            apiImage={null}
+          />
           
-          {/* メッセージと画像を取得するボタンセクション */}
           <ButtonSection 
-            onFetchMessage={fetchMessage} 
-            onFetchImage={fetchImage} 
+            onFetchMessage={fetchMessage}
           />
           
           {/* 情報リストを表示 */}

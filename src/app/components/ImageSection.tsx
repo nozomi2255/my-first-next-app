@@ -21,7 +21,6 @@ export default function ImageSection({ staticImageSrc, apiImage }: ImageSectionP
                     />
                 </div>
             </div>
-
             {apiImage && (
                 <div className="relative group mt-4">
                     <div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
