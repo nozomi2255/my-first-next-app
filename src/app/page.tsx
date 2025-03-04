@@ -7,11 +7,13 @@ import ImageSection from "./components/ImageSection";
 import ButtonSection from "./components/ButtonSection";
 import InfoList from "./components/InfoList";
 
+// Homeコンポーネントはアプリケーションのトップページを表示します
 export default function Home() {
-  const [message, setMessage] = useState("");
-  const [messageStyle, setMessageStyle] = useState({});
-  const [apiImage, setApiImage] = useState<string | null>(null);
+  const [message, setMessage] = useState(""); // APIから取得したメッセージを格納
+  const [messageStyle, setMessageStyle] = useState({}); // メッセージのスタイルを格納
+  const [apiImage, setApiImage] = useState<string | null>(null); // APIから取得した画像のURLを格納
 
+  // APIからメッセージを取得する関数
   const fetchMessage = async () => {
     try {
       const response = await fetch('/api/hello', {
@@ -25,6 +27,7 @@ export default function Home() {
     }
   };
 
+  // APIから画像を取得する関数
   const fetchImage = async () => {
     try {
       const response = await fetch('/api/hello', {
@@ -47,6 +50,7 @@ export default function Home() {
             subtitle="Welcome to your modern Next.js application" 
           />
           
+          {/* カウンターページへのリンク */}
           <Link
             href="/counter"
             className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
@@ -54,21 +58,32 @@ export default function Home() {
             Go to Counter Page 
           </Link>
           
+          {/* Todoリストページへのリンク */}
+          <Link
+            href="/todo"
+            className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+          >
+            Go to Todo List Page
+          </Link>
+          
+          {/* APIから取得したメッセージを表示 */}
           <MessageSection 
             message={message} 
             messageStyle={messageStyle} 
           />
           
-          <ImageSection 
-            staticImageSrc="/IMG.jpg" 
-            apiImage={apiImage} 
-          />
+          {/* APIから取得した画像を表示 */}
+          {apiImage && (
+            <img src={apiImage} alt="Fetched from API" className="rounded-lg shadow-md" />
+          )}
           
+          {/* メッセージと画像を取得するボタンセクション */}
           <ButtonSection 
             onFetchMessage={fetchMessage} 
             onFetchImage={fetchImage} 
           />
           
+          {/* 情報リストを表示 */}
           <InfoList />
         </main>
       </div>

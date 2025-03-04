@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
+import Link from "next/link";
 
+// タスクのインターフェース定義
 interface Task {
     id: number;
     title: string;
@@ -16,6 +18,7 @@ export default function TodoPage() {
     const [editingTask, setEditingTask] = useState<Task | null>(null);
     const [error, setError] = useState<string | null>(null);
 
+    // タスクを取得する関数
     const getTasks = async () => {
         setError(null);
         try {
@@ -34,6 +37,7 @@ export default function TodoPage() {
         }
     };
 
+    // 新しいタスクを追加する関数
     const addTask = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
@@ -67,6 +71,7 @@ export default function TodoPage() {
         }
     };
 
+    // タスクを更新する関数
     const updateTask = async (task: Task) => {
         setError(null);
         try {
@@ -91,6 +96,7 @@ export default function TodoPage() {
         }
     };
 
+    // タスクを削除する関数
     const deleteTask = async (taskId: number) => {
         setError(null);
         try {
@@ -114,6 +120,7 @@ export default function TodoPage() {
         }
     };
 
+    // 削除確認を行う関数
     const handleDelete = (taskId: number) => {
         if (window.confirm("このタスクを削除してもよろしいですか？")) {
             deleteTask(taskId);
@@ -131,6 +138,13 @@ export default function TodoPage() {
                 <h1 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
                     Todoリスト
                 </h1>
+
+                <Link
+                    href="/"
+                    className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                >
+                    Go to Home Page
+                </Link>
 
                 <form onSubmit={addTask} className="mb-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                     <div className="mb-4">
@@ -228,7 +242,10 @@ export default function TodoPage() {
                                         </div>
                                     )}
                                 </div>
-                                <button onClick={() => handleDelete(task.id)} className="bg-red-500 text-white px-2 py-1 rounded-full">
+                                <button
+                                    onClick={() => handleDelete(task.id)}
+                                    className="bg-red-500 text-white px-2 py-1 rounded-full transition-all duration-300 transform hover:scale-110 hover:bg-red-600"
+                                >
                                     ×
                                 </button>
                             </li>
