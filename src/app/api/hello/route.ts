@@ -1,7 +1,5 @@
 // src/app/api/hello/route.ts
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 
 // メッセージを返すエンドポイント
 export async function POST() {
@@ -16,26 +14,16 @@ export async function POST() {
     });
 }
 
-// 画像を返すエンドポイント
+// 画像のURLを返すエンドポイント
 export async function GET() {
     try {
-        // 画像ファイルのパスを指定
-        const imagePath = path.join(process.cwd(), 'public', 'IMG.jpg');
-        
-        // 画像ファイルを読み込む
-        const imageBuffer = fs.readFileSync(imagePath);
-        
-        // 画像をレスポンスとして返す
-        return new NextResponse(imageBuffer, {
-            headers: {
-                'Content-Type': 'image/jpeg',
-                'Cache-Control': 'public, max-age=31536000, immutable',
-            },
-        });
+        // 画像のURLを返す
+        const imageUrl = '/IMG.jpg'; // publicディレクトリに配置されている画像
+        return NextResponse.json({ imageUrl });
     } catch (error) {
-        console.error('画像の読み込みエラー:', error);
+        console.error('画像のURL取得エラー:', error);
         return NextResponse.json(
-            { error: '画像の読み込みに失敗しました' },
+            { error: '画像のURL取得に失敗しました' },
             { status: 500 }
         );
     }
